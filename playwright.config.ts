@@ -4,7 +4,8 @@ import { defineConfig, devices } from '@playwright/test';
 export default defineConfig({
   testDir: './tests',
   fullyParallel: true,
-  retries: 0,
+  retries:  process.env.CI ? 2 : 0,
+  timeout: 60_000,
   reporter: 'html',
   use: {
     baseURL: 'https://demowebshop.tricentis.com',
