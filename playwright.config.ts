@@ -10,7 +10,7 @@ export default defineConfig({
     baseURL: 'https://demowebshop.tricentis.com',
     trace: 'retain-on-failure',
     screenshot: 'only-on-failure',
-    headless:false
+    headless:true
   },
   projects: [
     { name: 'chromium', use: { ...devices['Desktop Chrome'] } },
