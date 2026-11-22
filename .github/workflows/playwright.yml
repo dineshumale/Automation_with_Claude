@@ -6,6 +6,7 @@ on:
   pull_request:
     branches: [main]
   workflow_dispatch:
+  - cron: '30 3 * * *'   # every day at 03:30 UTC
 
 jobs:
   test:
@@ -40,3 +41,14 @@ jobs:
           name: playwright-report
           path: playwright-report/
           retention-days: 14
+
+      - name: Notify Slack
+        if: ${{ always() }}
+        env:
+          SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
+        run: |
+          if [ "${{ job.status }}" = "success" ]; then ICON=":white_check_mark:"; else ICON=":x:"; fi
+          RUN_URL="${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}"
+          curl -sS -X POST -H 'Content-type: application/json' \
+            --data "{\"text\": \"$ICON Playwright tests: *${{ job.status }}*\nTrigger: ${{ github.event_name }} | Branch: ${{ github.ref_name }}\n<$RUN_URL|View run & report>\"}" \
+            "$SLACK_WEBHOOK_URL"
