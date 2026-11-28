@@ -11,7 +11,7 @@ if (!email || !password) {
 
 test.describe('Login and add to Cart',()=>{
 
-    test('login with valid crednetials',async({page})=>{
+    test('login with valid credentials',async({page})=>{
 
         const loginPage = new LoginPage(page);
             await loginPage.open();

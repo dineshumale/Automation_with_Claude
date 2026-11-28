@@ -1,4 +1,4 @@
-import {Page,Locator} from '@playwright/test'
+import {Page,Locator,expect} from '@playwright/test'
 export class AddToCart
 {
     private readonly page:Page;
@@ -10,7 +10,7 @@ export class AddToCart
     constructor(page:Page)
     {
         this.page=page;
-        this.bookLink=page.locator("(//a[normalize-space()='Books'])[3]")
+        this.bookLink=page.locator('.header-menu').getByRole('link', { name: 'Books' })
         this.mybook=page.getByRole("link",{name:"Computing and Internet"})
         this.cartBtn=page.locator("#add-to-cart-button-13")
         this.cartBtn_main=page.getByRole("link",{name:"Shopping cart"})
@@ -30,6 +30,8 @@ export class AddToCart
       async CartLink_Click()
     {
         await this.cartBtn.click()
+        // wait until the site confirms the add; otherwise we may open the cart too early
+        await expect(this.page.locator("#bar-notification")).toContainText("The product has been added to your shopping cart")
     }
 
        async CartmainLink_Click()

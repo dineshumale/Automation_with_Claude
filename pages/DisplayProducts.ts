@@ -8,7 +8,7 @@ export class AllProducts
     constructor(page:Page)
     {
         this.page=page;
-        this.bookLink=page.locator("(//a[normalize-space()='Books'])[3]")
+        this.bookLink=page.locator('.header-menu').getByRole('link', { name: 'Books' })
         this.all_Products=page.locator(".product-title")
     }
 
